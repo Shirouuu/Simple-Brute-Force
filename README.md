@@ -97,9 +97,7 @@ for username in usernames:
 
 The script will attempt to log in with each password in the passwords.txt file and will notify you when it successfully cracks the password.
 
-# License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
 
 
 
